@@ -1,0 +1,33 @@
+class Email(Exception):
+    def __init__(self, message):
+        self.message = message
+
+
+class Password(Exception):
+    def __init__(self, message):
+        self.message = message
+
+
+def login():
+    while True:
+        email = input('Адрес электронной почты: ')
+        password = input('Пароль: ')
+        try:
+            if '@' not in email or '.' not in email:
+                raise Email('example@gmail.com')
+            if len(password) < 8:
+                raise Password('не менее 8 символов')
+            print('Регистрация прошла успешно!')
+            break
+        except Email as e:
+            print('Почта введена некорректно')
+            print(f'Пример: {e.message}')
+            print('Повторите ввод')
+        except Password as e:
+            print('Ошибка ввода пароля')
+            print(f'Пароль должен содержать {e.message}')
+            print('Повторите ввод')
+
+
+print('Добро пожаловать!\nРегистрация пользователя')
+login()
