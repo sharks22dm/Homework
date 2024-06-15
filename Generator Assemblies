@@ -1,0 +1,55 @@
+""""Фабрика функций"""
+
+
+def create_operation(operation):
+    if operation == "add":
+        def add(x, y):
+            return x + y
+
+        return add  # возвращаем функцию как объект!! Тут скобки не нужны
+    elif operation == "sub":
+        def sub(x, y):
+            return x - y
+
+        return sub
+    elif operation == "mult":
+        def mult(x, y):
+            return x * y
+
+        return mult
+    elif operation == "div":
+        def div(x, y):
+            return x / y
+
+        return div
+
+
+my_func_add = create_operation("mult")
+print(my_func_add(1, 2))
+
+""""Лямбда-Функции"""
+square = lambda x: x ** 2
+print(square(3))
+
+
+def square_def(x):
+    return x ** 2
+
+
+print(square(3))
+
+""""Вызываемые Объекты"""
+
+
+class Rect:
+    def __init__(self, a, b):
+        self.a = a
+        self.b = b
+
+    def __call__(self):
+        return self.a * self.b
+
+
+rect = Rect(5, 10)
+area = rect()
+print(area)
