@@ -1,0 +1,34 @@
+import multiprocessing
+
+
+class WarehouseManager:
+    def __init__(self):
+        self.data = {}
+
+    def process_request(self, requests):
+        for product, action, quantity in requests:
+            if action == 'receipt':
+                if product in self.data:
+                    self.data[product] += quantity
+                else:
+                    self.data[product] = quantity
+            elif action == 'shipment':
+                if product in self.data and self.data[product] >= quantity:
+                    self.data[product] -= quantity
+        print(self.data)
+
+    def run(self, requests):
+        if __name__ == '__main__':
+            with multiprocessing.Pool(processes=2) as pool:
+                pool.map(self.process_request, requests)
+
+
+manager = WarehouseManager()
+requests = [
+    [('product1', 'receipt', 100),
+    ('product2', 'receipt', 150),
+    ('product1', 'shipment', 30),
+    ('product3', 'receipt', 200),
+    ('product2', 'shipment', 50)]
+]
+manager.run(requests)
