@@ -1,0 +1,67 @@
+import random
+import pandas as pd
+import matplotlib.pyplot as plt
+
+
+def gen_visitor(days):
+    """"Создание посетителей"""
+    visitors = []
+    foods = ['Бургер', 'Шаурма', 'Пицца', 'Хот-дог']
+    drinks = ['Лимонад', 'Сок', 'Вода', 'Чай']
+    for day in range(1, days + 1):
+        visitors_in_day = random.randint(30, 70)
+        for visitor in range(visitors_in_day):
+            visitor = {
+                'Посетитель №': len(visitors) + 1,
+                'День посещения': day,
+                'Еда': random.choice(foods),
+                'Напиток': random.choice(drinks)
+            }
+            visitors.append(visitor)
+    return visitors
+
+
+visitors_30_days = gen_visitor(30)
+for visitor in visitors_30_days:
+    print(visitor)
+
+df = pd.DataFrame(visitors_30_days)
+
+# Статистика посещения по дням
+day_visitors = df.groupby('День посещения').size()
+plt.figure(figsize=(12, 6))
+plt.title('график 1. Статистика посетителей по дням', loc='left', color='r', pad=20)
+plt.bar(day_visitors.index, day_visitors.values, color='b', label='Количество посетителей в день')
+for i, v in enumerate(day_visitors.values):
+    plt.text(i + 1, v - 3, str(v), color='w', ha='center')
+average_visitors = df.groupby('День посещения').size().mean()
+plt.axhline(y=average_visitors, color='0.8', linestyle='--',
+            label=f'Среднее количество посетителей: {int(average_visitors)}')
+plt.xlabel('День посещения')
+plt.ylabel('Количество посетителей')
+plt.legend()
+plt.show()
+
+# Статистика заказанных блюд
+plt.figure(figsize=(12, 6))
+plt.subplot(121)
+plt.title('график 2. Статистика по заказанной еде', loc='left', color='r')
+food_counts = df['Еда'].value_counts()
+food_counts.plot(kind='pie', autopct='%1.1f%%',
+                 labels=[f'{label} - {count}' for label, count in zip(food_counts.index, food_counts)])
+plt.ylabel('')
+plt.subplot(122)
+plt.title('график 3. Статистика по заказанным напиткам', loc='left', color='r')
+drink_counts = df['Напиток'].value_counts()
+drink_counts.plot(kind='pie', autopct='%1.1f%%',
+                  labels=[f'{label} - {count}' for label, count in zip(drink_counts.index, drink_counts)])
+plt.ylabel('')
+plt.show()
+
+# Статистика заказанных комбинаций блюд
+combination_stats = df.groupby(['Еда', 'Напиток']).size().reset_index(name='Количество')
+combination_stats = combination_stats.sort_values(by='Количество', ascending=False)
+plt.title('таблица 1. Статистика комбинаций заказов', loc='left', color='r')
+plt.table(cellText=combination_stats.values, colLabels=combination_stats.columns, loc='center')
+plt.axis('off')
+plt.show()
