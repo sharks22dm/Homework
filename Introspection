@@ -1,0 +1,17 @@
+import inspect
+from pprint import pprint
+
+
+class Test:
+
+    def introspection_info(self, obj):
+        pass
+
+
+test = Test()
+
+print('Тип:', type(test.introspection_info))
+print('Атрибуты и методы:')
+pprint(dir(test.introspection_info))
+print('Можно вызвать?', callable(test.introspection_info))
+print('Расположение:', inspect.getmodule(test.introspection_info))
