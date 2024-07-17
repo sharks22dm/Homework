@@ -1,0 +1,41 @@
+import unittest
+import rt_with_exceptions as rt
+import logging
+
+
+class RunnerTest(unittest.TestCase):
+    is_frozen = False
+
+    @unittest.skipIf(is_frozen, 'Тесты в этом кейсе заморожены')
+    def test_walk(self):
+        try:
+            obj = rt.Runner('Urban', speed=-5)
+            for i in range(10):
+                obj.walk()
+            logging.info('"test_walk" выполнен успешно')
+        except ValueError:
+            logging.warning("Неверная скорость для Runner", exc_info=True)
+
+    @unittest.skipIf(is_frozen, 'Тесты в этом кейсе заморожены')
+    def test_run(self):
+        try:
+            obj = rt.Runner(123)
+            for i in range(10):
+                obj.run()
+            logging.info('"test_run" выполнен успешно')
+        except TypeError:
+            logging.warning("Неверный тип данных для объекта Runner", exc_info=True)
+
+    @unittest.skipIf(is_frozen, 'Тесты в этом кейсе заморожены')
+    def test_challenge(self):
+        obj_1 = rt.Runner('Urban')
+        obj_2 = rt.Runner('Univer')
+        for i in range(10):
+            obj_1.walk()
+            obj_2.run()
+        self.assertNotEqual(obj_1.distance, obj_2.distance)
+
+
+if __name__ == '__main__':
+    logging.basicConfig(level=logging.INFO, filemode='r', filename='runner_test.log',
+                        encoding='UTF-8', format='%(levelname)s | %(message)s')
