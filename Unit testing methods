@@ -1,0 +1,41 @@
+import unittest
+import runner_and_tournament as rt
+
+
+class TournamentTest(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.all_results = {}
+
+    def setUp(self):
+        self.usain = rt.Runner("Усэйн", 10)
+        self.andrey = rt.Runner("Андрей", 9)
+        self.nick = rt.Runner("Ник", 3)
+
+    @classmethod
+    def tearDownClass(cls):
+        print(cls.all_results[0])
+        print(cls.all_results[1])
+        print(cls.all_results[2])
+
+    def test_1(self):
+        tournament = rt.Tournament(90, self.usain, self.nick)
+        results = tournament.start()
+        self.assertTrue(results[len(results)] == "Ник")
+        self.all_results[0] = results
+
+    def test_2(self):
+        tournament = rt.Tournament(90, self.andrey, self.nick)
+        results = tournament.start()
+        self.assertTrue(results[len(results)] == "Ник")
+        self.all_results[1] = results
+
+    def test_3(self):
+        tournament = rt.Tournament(90, self.usain, self.andrey, self.nick)
+        results = tournament.start()
+        self.assertTrue(results[len(results)] == "Ник")
+        self.all_results[2] = results
+
+
+if __name__ == '__main__':
+    unittest.main()
