@@ -1,0 +1,37 @@
+from datetime import datetime
+
+
+class SuperDate(datetime):
+
+    def get_season(self):
+
+        seasons = {
+            'Winter': (1, 2, 12),
+            'Spring': (3, 4, 5),
+            'Summer': (6, 7, 8),
+            'Autumn': (9, 10, 11)
+        }
+
+        month = self.month
+        for season, months in seasons.items():
+            if month in months:
+                return season
+
+    def get_time_of_day(self):
+
+        times = {
+            'Morning': range(6, 12),
+            'Day': range(12, 18),
+            'Evening': range(18, 24),
+            'Night': range(0, 6)
+        }
+
+        hour = self.hour
+        for time, hours in times.items():
+            if hour in hours:
+                return time
+
+
+a = SuperDate(2024, 2, 22, 12)
+print(a.get_season())
+print(a.get_time_of_day())
